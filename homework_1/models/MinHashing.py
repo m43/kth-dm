@@ -17,16 +17,10 @@ class MinHashing:
         :param universe: An array of all possible hashed k-shingles.
         """
 
-        # save original data
-        self.length = length
-        self.seed = seed
-        self.hash_values = hash_values
-        self.universe = universe
-
         # calculate minHash signature
         characteristic_column = [1 if item in hash_values else 0 for item in universe]
         np.random.seed(seed)  # set seed for numpy
-        permutations = [np.random.permutation(characteristic_column) for i in range(length)]
+        permutations = [np.random.permutation(characteristic_column) for _ in range(length)]
         # signature is an array of the row indexes where a 1 first appeared for each permutation
         self.signature = [np.where(permutation == 1)[0][0] for permutation in permutations]
 

@@ -1,8 +1,8 @@
-from models.Shingling import Shingling
 from models.CompareSets import CompareSets
-from models.MinHashing import MinHashing
 from models.CompareSignatures import CompareSignatures
 from models.Lsh import Lsh
+from models.MinHashing import MinHashing
+from models.Shingling import Shingling
 
 K = 10  # defines shingle size
 N = 99  # defines the length of minHash signatures
@@ -17,9 +17,9 @@ if __name__ == '__main__':
 
     universe = set()
 
-    my_shingles_1 = Shingling('../data/text/test_1.txt', K, HASH, universe)
-    my_shingles_2 = Shingling('../data/text/test_1.txt', K, HASH, universe)
-    my_shingles_3 = Shingling('../data/text/test_2.txt', K, HASH, universe)
+    my_shingles_1 = Shingling(open('../../datasets/text/test_1.txt', "r", encoding='UTF-8'), K, HASH, universe)
+    my_shingles_2 = Shingling(open('../../datasets/text/test_1.txt', "r", encoding='UTF-8'), K, HASH, universe)
+    my_shingles_3 = Shingling(open('../../datasets/text/test_2.txt', "r", encoding='UTF-8'), K, HASH, universe)
 
     my_hash_1 = my_shingles_1.return_hashed_shingles()
     my_hash_2 = my_shingles_2.return_hashed_shingles()

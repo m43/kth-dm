@@ -11,10 +11,6 @@ class CompareSignatures:
         :param second_signature: The second signature of the two to be compared.
         """
 
-        # remember originals
-        self.first_signature = first_signature
-        self.second_signature = second_signature
-
         # calculate similarity between the two signatures
         self.similarity = 0
         for i in range(len(first_signature)):

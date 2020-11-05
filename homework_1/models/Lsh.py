@@ -20,11 +20,8 @@ class Lsh:
         # create candidates member
         self.candidates = None
 
-        # remember originals
-        self.signatures = signatures
         self.band_width = band_width
         self.threshold = threshold
-        self.hash_function = hash_function
 
         # calculates LSH
         number_of_bands = len(signatures[0]) // band_width

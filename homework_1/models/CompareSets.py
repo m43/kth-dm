@@ -11,10 +11,6 @@ class CompareSets:
         :param second_set: Second set of hash values.
         """
 
-        # save original sets in the object
-        self.first = first_set
-        self.second = second_set
-
         # calculate Jaccard similarity and save it
         self.jaccard_similarity = len(first_set.intersection(second_set)) / len(first_set.union(second_set))
 
