@@ -1,4 +1,4 @@
-from CompareSignatures import CompareSignatures
+from models.CompareSignatures import CompareSignatures
 
 
 class Lsh:

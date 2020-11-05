@@ -1,8 +1,8 @@
-from Shingling import Shingling
-from CompareSets import CompareSets
-from MinHashing import MinHashing
-from CompareSignatures import CompareSignatures
-from Lsh import Lsh
+from models.Shingling import Shingling
+from models.CompareSets import CompareSets
+from models.MinHashing import MinHashing
+from models.CompareSignatures import CompareSignatures
+from models.Lsh import Lsh
 
 K = 10  # defines shingle size
 N = 99  # defines the length of minHash signatures
