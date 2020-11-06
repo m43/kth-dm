@@ -48,8 +48,8 @@ class Lsh:
         self.candidates = []
         for i in range(len(self.lsh_matrix)):
             for j in range(i + 1, len(self.lsh_matrix)):
-                comparison = CompareSignatures(self.lsh_matrix[i], self.lsh_matrix[j])
-                if comparison.similarity > self.threshold:
-                    self.candidates.append((i, j))
+                similarity = CompareSignatures(self.lsh_matrix[i], self.lsh_matrix[j]).similarity
+                if similarity > self.threshold:
+                    self.candidates.append((i, j, similarity))
 
         return self.candidates
