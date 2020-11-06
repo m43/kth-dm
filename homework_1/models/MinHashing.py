@@ -6,29 +6,34 @@ class MinHashing:
     Represents a minHash signature of a set of hash values.
     """
 
-    def __init__(self, length, hash_values, universe, seed=0):
+    def __init__(self, length, hash_brownies, universe, seed=0):
         """
         Constructs a MinHashing object using given set/vector of hash values for a given universe of items, a seed
         for creating random permutations and a hash function.
 
         :param length: The length of the signature (number of permutations)
-        :param hash_values: The hash values for which the signature is made
+        :param hash_brownies: The hash values for which the signatures are made.
         :param seed: Seed used for to generate permutations
         :param universe: An array of all possible hashed k-shingles.
         """
 
-        # calculate minHash signature
-        characteristic_column = [1 if item in hash_values else 0 for item in universe]
-        np.random.seed(seed)  # set seed for numpy
-        permutations = [np.random.permutation(characteristic_column) for _ in range(length)]
-        # signature is an array of the row indexes where a 1 first appeared for each permutation
-        self.signature = [np.where(permutation == 1)[0][0] for permutation in permutations]
+        self.signatures = []
+        np.random.seed(seed)
+        permutations = [np.random.permutation(np.arange(len(universe))) for _ in range(length)]
+        for brownie in hash_brownies:
+            signature = []
+            for perm in permutations:
+                for i in range(len(perm)):
+                    if universe[perm[i]] in brownie:
+                        signature.append(i)
+                        break
+            self.signatures.append(signature)
 
-    def return_signature(self):
+    def return_signatures(self):
         """
-        Returns the minHash signature.
+        Returns the minHash signatures.
 
-        :return: The minHash signature.
+        :return: The minHash signatures.
         """
 
-        return self.signature
+        return self.signatures

@@ -9,11 +9,11 @@ from models.MinHashing import MinHashing
 from models.Shingling import Shingling
 
 RESEARCH_DATASET_PATH = os.path.abspath("../../datasets/literature-text")
-K = 5
-N = 99
-BAND_WIDTH = 20
+K = 6
+N = 50
+BAND_WIDTH = 5
 # LSH_THRESHOLDS = [0.1, 0.3, 0.7, 0.05, 0.01]
-threshold = 0.1
+threshold = 0.3
 SEED = 36
 HASH = hash
 
@@ -23,7 +23,7 @@ def load_papers():
     hash_brownies = []
     universe = set()
     for filename in os.listdir(RESEARCH_DATASET_PATH):
-        file = open(os.path.join(RESEARCH_DATASET_PATH, filename), "r")
+        file = open(os.path.join(RESEARCH_DATASET_PATH, filename), "r", encoding='UTF-8')
         names.append(filename)
         hash_brownies.append(Shingling(file, K, HASH, universe).return_hashed_shingles())
 
@@ -42,7 +42,7 @@ def candidate_pairs(names, hash_brownies, threshold):
 
 def minhash_candidates(universe, names, hash_brownies, threshold):
     universe_list = list(universe)
-    signatures = [MinHashing(N, brownie, universe_list, SEED).return_signature() for brownie in hash_brownies]
+    signatures = MinHashing(N, hash_brownies, universe_list, SEED).return_signatures()
 
     candidate_names = []
     for c1 in range(len(signatures) - 1):
@@ -55,7 +55,7 @@ def minhash_candidates(universe, names, hash_brownies, threshold):
 
 def lsh_candidates(universe, names, hash_brownies, threshold):
     universe_list = list(universe)
-    signatures = [MinHashing(N, brownie, universe_list, SEED).return_signature() for brownie in hash_brownies]
+    signatures = MinHashing(N, hash_brownies, universe_list, SEED).return_signatures()
 
     candidates = Lsh(signatures, BAND_WIDTH, threshold, HASH).ret_candidates()
     candidate_names = [(names[candidate[0]], names[candidate[1]], candidate[2]) for candidate in candidates]
