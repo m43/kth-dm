@@ -1,0 +1,20 @@
+K:6 N:50 Band_width:3 Seed:36 MinHash_hash:<built-in function hash> LSH_band_hash:<built-in function hash>
+
+Got 141878 brownies in total for 18 documents.
+%%% load dataset: 0.519213055000364s %%%
+
+100%|██████████| 17/17 [00:00<00:00, 31.87it/s]
+Bare candidate_pairs for threshold 0.3:
+[('1502.03167.txt', '1502.03167_DUPLICATE.txt', 1.0), ('2003-Fei-Fei_ICCV03.txt', '2006-Fei-FeiFergusPerona2006.txt', 0.30247871094368295), ('koch2015msc-thesis.txt', 'koch2015oneshot.txt', 0.5403414123520413)]
+%%% candidate_pairs: 0.551850588999514s %%%
+
+100%|██████████| 18/18 [00:00<00:00, 2376.38it/s]
+100%|██████████| 17/17 [00:00<00:00, 11491.24it/s]
+minhash_candidates for threshold 0.3:
+[('1502.03167.txt', '1502.03167_DUPLICATE.txt', 1.0), ('2003-Fei-Fei_ICCV03.txt', '2006-Fei-FeiFergusPerona2006.txt', 0.34), ('2012-imagenet-classification-with-deep-convolutional-neural-networks.txt', '2012dropout.txt', 0.34), ('koch2015msc-thesis.txt', 'koch2015oneshot.txt', 0.64)]
+%%% minhash_candidates: 0.2918988229994284s %%%
+
+100%|██████████| 18/18 [00:00<00:00, 4588.12it/s]
+lsh_candidates for threshold 0.3:
+[('1502.03167.txt', '1502.03167_DUPLICATE.txt', 1.0), ('2003-Fei-Fei_ICCV03.txt', '2006-Fei-FeiFergusPerona2006.txt', 0.34), ('koch2015msc-thesis.txt', 'koch2015oneshot.txt', 0.64)]
+%%% lsh_candidates: 0.2560314330003166s %%%

@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 
 class MinHashing:
@@ -20,7 +21,7 @@ class MinHashing:
         self.signatures = []
         np.random.seed(seed)
         permutations = [np.random.permutation(np.arange(len(universe))) for _ in range(length)]
-        for brownie in hash_brownies:
+        for brownie in tqdm(hash_brownies):
             signature = []
             for perm in permutations:
                 for i in range(len(perm)):

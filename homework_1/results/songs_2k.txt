@@ -1,0 +1,17 @@
+K:5 N:100 Band_width:5 Seed:72 MinHash_hash:<built-in function hash> LSH_band_hash:<built-in function hash>
+1766it [00:00, 2242.31it/s]
+Got 82210 brownies in total for 2000 documents.
+%%% load dataset: 0.8960224880011083s %%%
+100%|██████████| 1999/1999 [01:40<00:00, 19.90it/s]
+Bare candidate_pairs for threshold 0.5:
+[('Mitar Miric -- Zena koja pogledom ubija -- url:https://tekstovi.net/2,187,33761.html', 'Mitar Miric -- Pogled koji ubija -- url:https://tekstovi.net/2,187,8768.html', 0.9618320610687023), ('Mitar Miric -- Vezite mi oci -- url:https://tekstovi.net/2,187,3629.html', 'Mitar Miric -- Zao mi je sto se udajes -- url:https://tekstovi.net/2,187,3198.html', 0.8267326732673267), ('Mitar Miric -- Svud si oko mene -- url:https://tekstovi.net/2,187,16516.html', 'Mitar Miric -- Kako da te zaboravim -- url:https://tekstovi.net/2,187,8755.html', 0.9043927648578811), ('Mladen Grdovic -- Evo mene moji ljudi -- url:https://tekstovi.net/2,777,34174.html', 'Mladen Grdovic -- Cacine rici -- url:https://tekstovi.net/2,777,12872.html', 0.948509485094851), ('Miroslav Ilic -- Pesma tugu zbori -- url:https://tekstovi.net/2,298,16181.html', 'Miroslav Ilic -- Pesma majci -- url:https://tekstovi.net/2,298,57732.html', 0.9332344213649851)]
+%%% candidate_pairs: 100.43136266700094s %%%
+100%|██████████| 2000/2000 [00:20<00:00, 97.94it/s]
+100%|██████████| 1999/1999 [00:20<00:00, 96.33it/s]
+minhash_candidates for threshold 0.5:
+[('Mitar Miric -- Zena koja pogledom ubija -- url:https://tekstovi.net/2,187,33761.html', 'Mitar Miric -- Pogled koji ubija -- url:https://tekstovi.net/2,187,8768.html', 0.96), ('Mitar Miric -- Vezite mi oci -- url:https://tekstovi.net/2,187,3629.html', 'Mitar Miric -- Zao mi je sto se udajes -- url:https://tekstovi.net/2,187,3198.html', 0.9), ('Mitar Miric -- Svud si oko mene -- url:https://tekstovi.net/2,187,16516.html', 'Mitar Miric -- Kako da te zaboravim -- url:https://tekstovi.net/2,187,8755.html', 0.85), ('Mladen Grdovic -- Evo mene moji ljudi -- url:https://tekstovi.net/2,777,34174.html', 'Mladen Grdovic -- Cacine rici -- url:https://tekstovi.net/2,777,12872.html', 0.94), ('Miroslav Ilic -- Pesma tugu zbori -- url:https://tekstovi.net/2,298,16181.html', 'Miroslav Ilic -- Pesma majci -- url:https://tekstovi.net/2,298,57732.html', 0.98)]
+%%% minhash_candidates: 41.41408219799996s %%%
+100%|██████████| 2000/2000 [00:24<00:00, 80.72it/s]
+lsh_candidates for threshold 0.5:
+[('Mladen Grdovic -- Evo mene moji ljudi -- url:https://tekstovi.net/2,777,34174.html', 'Mladen Grdovic -- Cacine rici -- url:https://tekstovi.net/2,777,12872.html', 0.94), ('Miroslav Ilic -- Pesma tugu zbori -- url:https://tekstovi.net/2,298,16181.html', 'Miroslav Ilic -- Pesma majci -- url:https://tekstovi.net/2,298,57732.html', 0.98), ('Mitar Miric -- Svud si oko mene -- url:https://tekstovi.net/2,187,16516.html', 'Mitar Miric -- Kako da te zaboravim -- url:https://tekstovi.net/2,187,8755.html', 0.85), ('Mitar Miric -- Zena koja pogledom ubija -- url:https://tekstovi.net/2,187,33761.html', 'Mitar Miric -- Pogled koji ubija -- url:https://tekstovi.net/2,187,8768.html', 0.96), ('Mitar Miric -- Vezite mi oci -- url:https://tekstovi.net/2,187,3629.html', 'Mitar Miric -- Zao mi je sto se udajes -- url:https://tekstovi.net/2,187,3198.html', 0.9)]
+%%% lsh_candidates: 25.17763984299927s %%%

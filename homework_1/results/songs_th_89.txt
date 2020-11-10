@@ -1,0 +1,21 @@
+K:5 N:100 Band_width:5 Seed:72 MinHash_hash:<built-in function hash> LSH_band_hash:<built-in function hash>
+89it [00:00, 2091.64it/s]
+
+Got 19327 brownies in total for 89 documents.
+%%% load dataset: 0.04492207399925974s %%%
+
+100%|██████████| 88/88 [00:00<00:00, 395.89it/s]
+Bare candidate_pairs for threshold 0.5:
+[('Thompson -- Ela -- url:https://tekstovi.net/2,440,56682.html', 'Thompson -- Svidila se meni -- url:https://tekstovi.net/2,440,19478.html', 0.9560669456066946), ('Thompson -- Sokolov krik -- url:https://tekstovi.net/2,440,56687.html', 'Thompson -- Ora et labora -- url:https://tekstovi.net/2,440,39104.html', 0.9572192513368984), ('Thompson -- Necete u Imotski -- url:https://tekstovi.net/2,440,56081.html', 'Thompson -- Bojna Cavoglave -- url:https://tekstovi.net/2,440,53861.html', 0.6677115987460815)]
+%%% candidate_pairs: 0.22266674200000125s %%%
+
+100%|██████████| 89/89 [00:00<00:00, 698.00it/s]
+100%|██████████| 88/88 [00:00<00:00, 2277.19it/s]
+minhash_candidates for threshold 0.5:
+[('Thompson -- Ela -- url:https://tekstovi.net/2,440,56682.html', 'Thompson -- Svidila se meni -- url:https://tekstovi.net/2,440,19478.html', 0.91), ('Thompson -- Sokolov krik -- url:https://tekstovi.net/2,440,56687.html', 'Thompson -- Ora et labora -- url:https://tekstovi.net/2,440,39104.html', 1.0), ('Thompson -- Necete u Imotski -- url:https://tekstovi.net/2,440,56081.html', 'Thompson -- Bojna Cavoglave -- url:https://tekstovi.net/2,440,53861.html', 0.72)]
+%%% minhash_candidates: 0.23539254300158063s %%%
+
+100%|██████████| 89/89 [00:00<00:00, 606.35it/s]
+lsh_candidates for threshold 0.5:
+[('Thompson -- Necete u Imotski -- url:https://tekstovi.net/2,440,56081.html', 'Thompson -- Bojna Cavoglave -- url:https://tekstovi.net/2,440,53861.html', 0.72), ('Thompson -- Sokolov krik -- url:https://tekstovi.net/2,440,56687.html', 'Thompson -- Ora et labora -- url:https://tekstovi.net/2,440,39104.html', 1.0), ('Thompson -- Ela -- url:https://tekstovi.net/2,440,56682.html', 'Thompson -- Svidila se meni -- url:https://tekstovi.net/2,440,19478.html', 0.91)]
+%%% lsh_candidates: 0.21007902699966507s %%%
