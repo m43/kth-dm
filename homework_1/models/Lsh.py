@@ -28,7 +28,9 @@ class Lsh:
         for s in signatures:
             signature_bands = []
             for band_id in range(number_of_bands):
-                band = tuple(s[band_id * band_width: band_id * band_width + band_width])
+                idx_from = band_id * band_width
+                idx_to = band_id * (band_width + 1) if band_id != (number_of_bands - 1) else len(s)
+                band = tuple(s[idx_from:idx_to])
                 signature_bands.append(hash_function(band))
             signature_bands_matrix.append(signature_bands)
 
