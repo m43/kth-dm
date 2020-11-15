@@ -11,14 +11,14 @@ class FrequentItemsets:
         """
         Creates a FrequentItemSets object where frequent items must have a support larger than given s.
 
-        :param fname: Path to file which the frequent itemsets will be calculated for.
+        :param fname: Path to dataset (file) which the frequent itemsets will be calculated for.
         :param s:  Similarity threshold below which itemsets are considered unsupported.
         """
 
         # read file line by line
         k = 1
-        self.support = []
-        frequent_subsets = set()
+        self.support = []  # array containing dictionaries of frequent itemsets (size of itemsets depends on the index)
+        self.frequent_itemsets = set()  # set of frequent itemsets
         while True:
             k_count = dict()  # dictionary which counts appearnce of k-sized tuples
             basket_count = 0  # used for calculating support
@@ -47,7 +47,7 @@ class FrequentItemsets:
                             for length in range(1, k):
                                 subsets = list(itertools.combinations(k_tuple, length))
                                 for subset in subsets:
-                                    if subset not in frequent_subsets:
+                                    if subset not in self.frequent_itemsets:
                                         add = False
                                         ignore_set.add(k_tuple)
                                         break
@@ -71,7 +71,7 @@ class FrequentItemsets:
                     del k_count[key]
                 else:
                     k_count[key] = support
-                    frequent_subsets.add(key)
+                    self.frequent_itemsets.add(key)
 
             # terminate if no k-sized subsets have support
             if len(k_count) == 0:
