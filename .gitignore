@@ -2,8 +2,6 @@
 ############### CUSTOM ################
 #######################################
 
-datasets/scraped_songs*
-datasets/literature*
 homework_1/datasets/scraped_songs*
 homework_1/datasets/literature*
 

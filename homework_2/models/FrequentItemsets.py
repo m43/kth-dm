@@ -20,9 +20,8 @@ class FrequentItemsets:
         self.support = []  # array containing dictionaries of frequent itemsets (size of itemsets depends on the index)
         self.frequent_itemsets = set()  # set of frequent itemsets
         while True:
-            k_count = dict()  # dictionary which counts appearnce of k-sized tuples
+            k_count = dict()  # dictionary which counts appearance of k-sized tuples
             basket_count = 0  # used for calculating support
-            ignore_set = set()  # remembers which itemsets have no support from subsets
             candidates = set()  # C_k in the Apriori algorithm, generated if k > 1
             if k > 1:
                 last_supported = list(self.support[k - 1 - 1].keys())
