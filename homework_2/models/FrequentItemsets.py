@@ -23,6 +23,23 @@ class FrequentItemsets:
             k_count = dict()  # dictionary which counts appearnce of k-sized tuples
             basket_count = 0  # used for calculating support
             ignore_set = set()  # remembers which itemsets have no support from subsets
+            candidates = set()  # C_k in the Apriori algorithm, generated if k > 1
+            if k > 1:
+                last_supported = list(self.support[k - 1 - 1].keys())
+                for supported in last_supported:
+                    for singleton in self.support[0]:
+                        candidate = tuple(sorted(supported + singleton))
+                        add = True
+                        subsets = list(itertools.combinations(candidate, k - 1))
+                        for subset in subsets:
+                            if subset not in self.frequent_itemsets:
+                                add = False
+                                break
+                        if add:
+                            candidates.add(candidate)
+                if len(candidates) == 0:
+                    break  # break if no candidates exist
+
             with open(fname, 'r') as data:
                 # count k sized subsets of baskets
                 for line in data:
@@ -37,31 +54,21 @@ class FrequentItemsets:
                     # generate all k-sized subsets
                     possible_k_tuples = list(itertools.combinations(current_basket, k))
 
-                    # ignore those k-sized tuples whose subsets have no support if k > 1
-                    candidates = set()
+                    # count
                     if k > 1:
                         for k_tuple in possible_k_tuples:
-                            if k_tuple in ignore_set:
-                                continue
-                            add = True
-                            for length in range(1, k):
-                                subsets = list(itertools.combinations(k_tuple, length))
-                                for subset in subsets:
-                                    if subset not in self.frequent_itemsets:
-                                        add = False
-                                        ignore_set.add(k_tuple)
-                                        break
-                            if add:
-                                candidates.add(k_tuple)
+                            if k_tuple in candidates:
+                                if k_tuple in k_count:
+                                    k_count[k_tuple] += 1
+                                else:
+                                    k_count[k_tuple] = 1
                     else:
-                        candidates = set(possible_k_tuples)
-
-                    # count all k_tuples
-                    for k_tuple in candidates:
-                        if k_tuple in k_count:
-                            k_count[k_tuple] += 1
-                        else:
-                            k_count[k_tuple] = 1
+                        # count all k_tuples
+                        for k_tuple in possible_k_tuples:
+                            if k_tuple in k_count:
+                                k_count[k_tuple] += 1
+                            else:
+                                k_count[k_tuple] = 1
 
             # remove those k-sized tuples which have support < s, otherwise remember their support and them
             keys = list(k_count.keys())
