@@ -1,12 +1,12 @@
 # Instructions on how to run the solution
 
-There are exactly one demo that can be run and that accepts three command line arguments:
+There is exactly one demo that can be run and that accepts three command line arguments:
 
 1. dataset path
 2. support threshold
 3. condidence threshold
 
-Python 3 should be installed. To run the demo, enter one of the commands below in terminal/cmd that is positioned in this directory (in which this README is).
+Python 3 should be installed. To run the demo, enter one of the commands below in terminal/cmd that is positioned in this directory (in which this README is). Commands are given for two different datasets.
 
 ## Dataset 1
 
