@@ -1,18 +1,19 @@
 import random
-
-import numpy as np
+from timeit import default_timer as timer
 
 from models.Triest import Triest
 
-# DATASET = '../datasets/web-Google.txt'
 DATASET = '../datasets/com-youtube.ungraph.txt'
-M = 20000
+M = 1e5
 
 if __name__ == '__main__':
-    np.random.seed(72)
-    random.seed(72)
+    random.seed(720)
 
+    start = timer()
     trieste = Triest(fname=DATASET, m=M)
-    print(f"Base: {trieste.base()}")
     print(f"Improved: {trieste.improved()}")
+    print(f"%%% timing: {timer() - start}s %%%\n")
 
+    start = timer()
+    print(f"Base: {trieste.base()}")
+    print(f"%%% timing: {timer() - start}s %%%\n")
