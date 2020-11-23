@@ -1,7 +1,8 @@
-from models.Trieste import Trieste
+from models.Triest import Triest
 
 DATASET = '../datasets/web-Google.txt'
 M = 10000
 
-trieste = Trieste(fname=DATASET, m=M)
+trieste = Triest(fname=DATASET, m=M)
 trieste.base()
+trieste.improved()

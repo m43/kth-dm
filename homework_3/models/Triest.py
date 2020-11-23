@@ -2,7 +2,7 @@ import numpy as np
 import random
 
 
-class Trieste:
+class Triest:
 
     def __init__(self, fname, m):
         self.m = m
@@ -14,14 +14,12 @@ class Trieste:
         self.neighbourhoods = dict()
 
     def base(self):
-        self.__reservoir_sampling()
+        self.__reservoir_sampling(improved=False)
 
-    # implement using reservoir method
     def improved(self):
-        pass
+        self.__reservoir_sampling(improved=True)
 
-    # TODO make a strategy or something like that for BASE and IMPROVED
-    def __reservoir_sampling(self):
+    def __reservoir_sampling(self, improved):
         # open I/O stream
         with open(self.fname, 'r') as f:
             # go through stream and do reservoir sampling
@@ -38,9 +36,12 @@ class Trieste:
                 self.t += 1
 
                 # use reservoir sampling
-                if self.__reservoir_sample(edge):
+                if improved:
+                    self.__update_counter('+', edge, improved)
+                if self.__reservoir_sample(edge, improved):
                     self.__add_sample(edge)  # add edge to samples
-                    self.__update_counter('+', edge)  # update counters according to edge addition
+                    if not improved:
+                        self.__update_counter('+', edge)  # update counters according to edge addition
 
         # TODO: remove later
         # prints global triangle estimation
@@ -49,7 +50,7 @@ class Trieste:
             epsilon = 1
         print(f'Global triangles estimate using m={self.m} is equal to {epsilon * self.global_counter}')
 
-    def __reservoir_sample(self, edge):
+    def __reservoir_sample(self, edge, improved):
         # if reservoir not full we will add the edge, return true
         if self.t <= self.m:
             return True
@@ -57,7 +58,8 @@ class Trieste:
         # if reservoir full, flip a coin to determine if we will replace a currently saved sample or not
         elif np.random.binomial(n=1, p=self.m / self.t, size=1)[0] == 1:
             removed_edge = self.__remove_random_sample()
-            self.__update_counter('-', removed_edge)  # update counters according to edge removal
+            if not improved:
+                self.__update_counter('-', removed_edge)  # update counters according to edge removal
             return True
 
         else:
@@ -88,7 +90,7 @@ class Trieste:
 
         return removed_edge
 
-    def __update_counter(self, action, edge):
+    def __update_counter(self, action, edge, improved=False):
         # get vertices from edge
         u = edge[0]
         v = edge[1]
@@ -104,9 +106,9 @@ class Trieste:
         for shared_neighbour in shared_neighbourhood:
             if action == '+':
                 self.global_counter += 1
-                self.__increase_count(shared_neighbour)
-                self.__increase_count(u)
-                self.__increase_count(v)
+                self.__increase_count(shared_neighbour, improved)
+                self.__increase_count(u, improved)
+                self.__increase_count(v, improved)
 
             elif action == '-':
                 self.global_counter -= 1
@@ -116,11 +118,13 @@ class Trieste:
             else:
                 raise RuntimeError(f'Action {action} is not a defined action, must be \'-\' or \'+\'!')
 
-    def __increase_count(self, vertex):
+    def __increase_count(self, vertex, weighted=False):
+        eta = max(1, ((self.t - 1) * (self.t - 2)) / (self.m * (self.m - 1)))
+
         if vertex in self.local_counters:
-            self.local_counters[vertex] += 1
+            self.local_counters[vertex] += 1 if not weighted else eta
         else:
-            self.local_counters[vertex] = 1
+            self.local_counters[vertex] = 1 if not weighted else eta
 
     def __decrease_count(self, vertex):
         if vertex in self.local_counters:
