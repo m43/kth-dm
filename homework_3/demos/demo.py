@@ -1,8 +1,17 @@
+import random
+
+import numpy as np
+
 from models.Triest import Triest
 
-DATASET = '../datasets/web-Google.txt'
-M = 10000
+# DATASET = '../datasets/web-Google.txt'
+DATASET = '../datasets/com-youtube.ungraph.txt'
+M = 20000
 
-trieste = Triest(fname=DATASET, m=M)
-trieste.base()
-trieste.improved()
+if __name__ == '__main__':
+    np.random.seed(72)
+    random.seed(72)
+
+    trieste = Triest(fname=DATASET, m=M)
+    print(f"Improved: {trieste.improved()}")
+    print(f"Base: {trieste.base()}")
