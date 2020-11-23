@@ -1,11 +1,13 @@
 import random
+from timeit import default_timer as timer
 
 
 class Triest:
 
-    def __init__(self, fname, m):
+    def __init__(self, fname, m, log=False):
         self.m = m
         self.fname = fname
+        self.log = log
 
     def base(self):
         return self.__reservoir_sampling(improved=False)
@@ -14,6 +16,7 @@ class Triest:
         return self.__reservoir_sampling(improved=True)
 
     def __reservoir_sampling(self, improved):
+        self.start_timer = timer()
         self.t = 0
         self.global_counter = 0
         self.samples = []
@@ -25,17 +28,26 @@ class Triest:
                 if line.startswith('#'):
                     continue
 
-                edge = tuple(sorted([int(x) for x in (line.strip('\n')).split()]))
+                edge = tuple(sorted([int(x) for x in line.strip().split()]))
                 self.t += 1
+
+                if self.log and self.t % 1000000 == 0:
+                    print(f"t={self.t} {self.__get_result(improved)}")
 
                 # use reservoir sampling
                 if improved:
                     self.__update_counter('+', edge, improved)
                 if self.__reservoir_sample(edge, improved):
-                    self.__add_sample(edge)  # add edge to samples
+                    self.__add_sample(edge)
                     if not improved:
-                        self.__update_counter('+', edge)  # update counters according to edge addition
+                        self.__update_counter('+', edge)
 
+        result = self.__get_result(improved)
+        if self.log:
+            print(f"Final result: {result}")
+        return result
+
+    def __get_result(self, improved):
         if improved:
             epsilon = 1
         else:
@@ -43,10 +55,13 @@ class Triest:
             epsilon = max(1, epsilon)
 
         return {
+            "t": self.t,
             "m": self.m,
             "epsilon": epsilon,
             "global_counter": self.global_counter,
-            "global_triangles": epsilon * self.global_counter
+            "global_triangles": epsilon * self.global_counter,
+            "samples_length": len(self.samples),
+            "time": timer() - self.start_timer
         }
 
     def __reservoir_sample(self, _, improved):
@@ -58,7 +73,7 @@ class Triest:
         elif random.random() < self.m / self.t:
             removed_edge = self.__remove_random_sample()
             if not improved:
-                self.__update_counter('-', removed_edge)  # update counters according to edge removal
+                self.__update_counter('-', removed_edge)
             return True
 
         else:
