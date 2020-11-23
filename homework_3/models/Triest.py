@@ -1,7 +1,5 @@
 import random
 
-import numpy as np
-
 
 class Triest:
 
@@ -18,7 +16,7 @@ class Triest:
     def __reservoir_sampling(self, improved):
         self.t = 0
         self.global_counter = 0
-        self.samples = set()
+        self.samples = []
         self.local_counters = dict()
         self.neighbourhoods = dict()
 
@@ -57,7 +55,7 @@ class Triest:
             return True
 
         # if reservoir full, flip a coin to determine if we will replace a currently saved sample or not
-        elif np.random.binomial(n=1, p=self.m / self.t, size=1)[0] == 1:
+        elif random.random() < self.m / self.t:
             removed_edge = self.__remove_random_sample()
             if not improved:
                 self.__update_counter('-', removed_edge)  # update counters according to edge removal
@@ -67,7 +65,7 @@ class Triest:
             return False
 
     def __add_sample(self, edge):
-        self.samples.add(edge)
+        self.samples.append(edge)
 
         # manage neighbourhood hash table
         if edge[0] not in self.neighbourhoods:
@@ -78,8 +76,10 @@ class Triest:
         self.neighbourhoods[edge[1]].add(edge[0])
 
     def __remove_random_sample(self):
-        removed_edge = random.sample(self.samples, 1)[0]
-        self.samples.remove(removed_edge)
+        remove_id = random.randint(0, self.m - 1)
+        removed_edge = self.samples[remove_id]
+        self.samples[remove_id] = self.samples[-1]
+        del self.samples[-1]
 
         self.neighbourhoods[removed_edge[0]].remove(removed_edge[1])
         if len(self.neighbourhoods[removed_edge[0]]) == 0:

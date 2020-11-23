@@ -13,5 +13,6 @@ if __name__ == '__main__':
     random.seed(72)
 
     trieste = Triest(fname=DATASET, m=M)
-    print(f"Improved: {trieste.improved()}")
     print(f"Base: {trieste.base()}")
+    print(f"Improved: {trieste.improved()}")
+
