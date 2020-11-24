@@ -8,13 +8,15 @@ if __name__ == '__main__':
 
     datasets = [
         # name, path, nodes, edges, triangles
-        ("Youtube", "../datasets/com-youtube.ungraph.txt", 1134890, 2987624, 3056386),
+        # ("Youtube", "../datasets/com-youtube.ungraph.txt", 1134890, 2987624, 3056386),
         ("Amazon", "../datasets/com-amazon.ungraph.txt", 334863, 925872, 667129),
-        ("DBLP", "../datasets/com-dblp.ungraph.txt", 317080, 1049866, 2224385),
-        ("Facebook", "../datasets/facebook_combined.txt", 4039, 88234, 1612010)
+        # ("DBLP", "../datasets/com-dblp.ungraph.txt", 317080, 1049866, 2224385),
+        # ("Facebook", "../datasets/facebook_combined.txt", 4039, 88234, 1612010)
     ]
-    ms = [10000, 50000, 100000]
-    loops = 10
+    # ms = [10000, 50000, 100000]
+    # loops = 10
+    ms = [100000]
+    loops = 2
 
     print(f"loops={loops}")
 
@@ -23,7 +25,7 @@ if __name__ == '__main__':
         results[dataset_name] = {}
         for m in ms:
             results[dataset_name][m] = {}
-            trieste = Triest(fname=dataset_path, m=m)
+            trieste = Triest(fname=dataset_path, m=m, log=True)
             for alg_name, alg in [("Improved", trieste.improved), ("Base", trieste.base)]:
                 triangles_array = []
                 best_time = -1
