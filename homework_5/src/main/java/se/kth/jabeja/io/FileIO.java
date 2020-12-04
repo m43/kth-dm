@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2008
- *  
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -26,7 +26,7 @@ import java.io.*;
 
 public class FileIO {
 
-//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
 
     /**
      * Writes a string into a file.
@@ -43,7 +43,7 @@ public class FileIO {
         output.close();
     }
 
-//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
 
     /**
      * Appends a string at the end of an existing file. If the file does not exist then it is created.
@@ -60,7 +60,7 @@ public class FileIO {
         output.close();
     }
 
-//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
 
     /**
      * Reads the content of a file and returns it as a string.
