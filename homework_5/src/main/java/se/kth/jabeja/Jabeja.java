@@ -67,20 +67,32 @@ public class Jabeja {
         Node nodep = entireGraph.get(nodeId);
 
         if (config.getNodeSelectionPolicy() == NodeSelectionPolicy.HYBRID || config.getNodeSelectionPolicy() == NodeSelectionPolicy.LOCAL) {
-            // swap with random neighbors
-            // TODO
+            partner = findPartner(nodeId, getNeighbors(nodep));
         }
 
         if (config.getNodeSelectionPolicy() == NodeSelectionPolicy.HYBRID
                 || config.getNodeSelectionPolicy() == NodeSelectionPolicy.RANDOM) {
-            // if local policy fails then randomly sample the entire graph
-            // TODO
+            if (partner == null) {
+                partner = findPartner(nodeId, getSample(nodeId));
+            }
         }
 
-        // swap the colors
-        // TODO
+        if (partner != null) {
+            int pColor = nodep.getColor();
+            nodep.setColor(partner.getColor());
+            partner.setColor(pColor);
+        }
     }
 
+    /**
+     * Method goes through all given nodes looking for the best partner. A partner is a node with which the
+     * given nodeId would change color. All given nodes are partner candidates. The best partner is returned,
+     * if there is one that satisfies conditions for a partner.
+     *
+     * @param nodeId
+     * @param nodes  the candidate partners
+     * @return the best partner among given nodes, if any exist
+     */
     public Node findPartner(int nodeId, Integer[] nodes) {
 
         Node nodep = entireGraph.get(nodeId);
@@ -88,7 +100,21 @@ public class Jabeja {
         Node bestPartner = null;
         double highestBenefit = 0;
 
-        // TODO
+        for (int nodeqIdx : nodes) {
+            Node nodeq = entireGraph.get(nodeqIdx);
+            int degree_pp = getDegree(nodep, nodep.getColor());
+            int degree_qq = getDegree(nodeq, nodeq.getColor());
+            double oldBenefit = Math.pow(degree_pp, config.getAlpha()) + Math.pow(degree_qq, config.getAlpha());
+
+            int degree_pq = getDegree(nodep, nodeq.getColor());
+            int degree_qp = getDegree(nodeq, nodep.getColor());
+            double newBenefit = Math.pow(degree_pq, config.getAlpha()) + Math.pow(degree_qp, config.getAlpha());
+
+            if ((newBenefit * T > oldBenefit) && (newBenefit > highestBenefit)) {
+                bestPartner = nodeq;
+                highestBenefit = newBenefit;
+            }
+        }
 
         return bestPartner;
     }
