@@ -51,4 +51,5 @@ for thing in "${graphs[@]}"; do
     run_with_lock task $thing
 done 
 
+wait
 python extract_results.py output > output/results.csv
