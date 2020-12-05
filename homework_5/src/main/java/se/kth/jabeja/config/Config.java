@@ -13,6 +13,8 @@ public class Config {
     private GraphInitColorPolicy initColorPolicy;
     private NodeSelectionPolicy nodeSelectionPolicy;
     private Float alpha;
+    private Float temperatureAlpha;
+    private String version;
 
     public Config setAlpha(Float alpha) {
         this.alpha = alpha;
@@ -162,4 +164,21 @@ public class Config {
         return new Config();
     }
 
+    public Float getTemperatureAlpha() {
+        return temperatureAlpha;
+    }
+
+    public Config setTemperatureAlpha(Float temperatureAlpha) {
+        this.temperatureAlpha = temperatureAlpha;
+        return this;
+    }
+
+    public Config setVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 }

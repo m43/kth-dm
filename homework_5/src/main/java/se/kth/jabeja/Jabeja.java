@@ -14,13 +14,14 @@ import java.util.List;
 
 public class Jabeja {
     final static Logger logger = Logger.getLogger(Jabeja.class);
-    private final Config config;
+    final Config config;
     private final HashMap<Integer/*id*/, Node/*neighbors*/> entireGraph;
     private final List<Integer> nodeIds;
-    private int numberOfSwaps;
-    private int round;
-    private float T;
+    int numberOfSwaps;
+    int round;
+    double T;
     private boolean resultFileCreated = false;
+    int saBottomCounter = 0;
 
     //-------------------------------------------------------------------
     public Jabeja(HashMap<Integer, Node> graph, Config config) {
@@ -49,12 +50,21 @@ public class Jabeja {
     /**
      * Simulated analealing cooling function
      */
-    private void saCoolDown() {
-        // TODO for second task
-        if (T > 1)
+    void saCoolDown() {
+        if (T > 1) {
             T -= config.getDelta();
-        if (T < 1)
-            T = 1;
+            if (T < 1) {
+                T = 1;
+            }
+        }
+
+        if (T == 1 && saBottomCounter++ > 40) {
+            System.out.println("restart");
+            if ((config.getRounds() - round) > (50 + T / config.getDelta())) {
+                saBottomCounter = 0;
+                T = config.getTemperature();
+            }
+        }
     }
 
     /**
@@ -81,6 +91,7 @@ public class Jabeja {
             int pColor = nodep.getColor();
             nodep.setColor(partner.getColor());
             partner.setColor(pColor);
+            numberOfSwaps++;
         }
     }
 
@@ -104,19 +115,27 @@ public class Jabeja {
             Node nodeq = entireGraph.get(nodeqIdx);
             int degree_pp = getDegree(nodep, nodep.getColor());
             int degree_qq = getDegree(nodeq, nodeq.getColor());
-            double oldBenefit = Math.pow(degree_pp, config.getAlpha()) + Math.pow(degree_qq, config.getAlpha());
+            double oldBenefit = benefitOfSolution(degree_pp, degree_qq);
 
             int degree_pq = getDegree(nodep, nodeq.getColor());
             int degree_qp = getDegree(nodeq, nodep.getColor());
-            double newBenefit = Math.pow(degree_pq, config.getAlpha()) + Math.pow(degree_qp, config.getAlpha());
+            double newBenefit = benefitOfSolution(degree_pq, degree_qp);
 
-            if ((newBenefit * T > oldBenefit) && (newBenefit > highestBenefit)) {
+            if ((newBenefit > highestBenefit) && shouldAcceptNewSolution(newBenefit, oldBenefit)) {
                 bestPartner = nodeq;
                 highestBenefit = newBenefit;
             }
         }
 
         return bestPartner;
+    }
+
+    double benefitOfSolution(int degree1, int degree2) {
+        return Math.pow(degree1, config.getAlpha()) + Math.pow(degree2, config.getAlpha());
+    }
+
+    boolean shouldAcceptNewSolution(double newBenefit, double oldBenefit) {
+        return newBenefit * T > oldBenefit;
     }
 
     /**
@@ -232,7 +251,9 @@ public class Jabeja {
 
         int edgeCut = grayLinks / 2;
 
-        logger.info("round: " + round + ", edge cut:" + edgeCut + ", swaps: " + numberOfSwaps + ", migrations: " + migrations);
+        logger.info(
+                "round: " + (round + 1) + ", edge cut:" + edgeCut + ", swaps: " + numberOfSwaps + ", migrations: " + migrations + ", temp"
+                        + T);
 
         saveToFile(edgeCut, migrations);
     }
@@ -247,7 +268,8 @@ public class Jabeja {
                 config.getOutputDir() + File.separator + inputFile.getName() + "_" + "NS" + "_" + config.getNodeSelectionPolicy() + "_"
                         + "GICP" + "_" + config.getGraphInitialColorPolicy() + "_" + "T" + "_" + config.getTemperature() + "_" + "D" + "_"
                         + config.getDelta() + "_" + "RNSS" + "_" + config.getRandomNeighborSampleSize() + "_" + "URSS" + "_" + config
-                        .getUniformRandomSampleSize() + "_" + "A" + "_" + config.getAlpha() + "_" + "R" + "_" + config.getRounds() + ".txt";
+                        .getUniformRandomSampleSize() + "_" + "A" + "_" + config.getAlpha() + "_V_"
+                        + config.getVersion() + "_" + "R" + "_" + config.getRounds() + ".txt";
 
         if (!resultFileCreated) {
             File outputDir = new File(config.getOutputDir());
@@ -263,6 +285,6 @@ public class Jabeja {
             resultFileCreated = true;
         }
 
-        FileIO.append(round + delimiter + (edgeCuts) + delimiter + numberOfSwaps + delimiter + migrations + "\n", outputFilePath);
+        FileIO.append((round + 1) + delimiter + (edgeCuts) + delimiter + numberOfSwaps + delimiter + migrations + "\n", outputFilePath);
     }
 }

@@ -56,7 +56,17 @@ public class Main {
      * @return
      */
     private void startJabeja(HashMap<Integer, Node> graph) throws IOException {
-        Jabeja host = new Jabeja(graph, config);
+        Jabeja host;
+        switch (config.getVersion()) {
+            case "v1":
+                host = new Jabeja(graph, config);
+                break;
+            case "v2":
+                host = new JabejaExponentialSA(graph, config);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected version: " + config.getVersion());
+        }
         host.startJabeja();
     }
 }

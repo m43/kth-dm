@@ -30,7 +30,9 @@ public class CLI {
 
     @Option(name = "-seed", usage = "Seed.") private int SEED = 0;
 
-    @Option(name = "-alpha", usage = "Alpah parameter") private float ALPHA = 2;
+    @Option(name = "-alpha", usage = "Alpha parameter") private float ALPHA = 2;
+
+    @Option(name = "-tempAlpha", usage = "Temperature alpha parameter") private float TEMP_ALPHA = 0.9f;
 
     @Option(name = "-randNeighborsSampleSize", usage = "Number of random neighbors sample size.") private int randNeighborsSampleSize = 3;
 
@@ -43,6 +45,8 @@ public class CLI {
     @Option(name = "-graph", usage = "Location of the input graph.") private static String GRAPH = "./graphs/ws-250.graph";
 
     @Option(name = "-outputDir", usage = "Location of the output file(s)") private static String OUTPUT_DIR = "./output";
+
+    @Option(name = "-version", usage = "Version of Jabeja to use") private static String VERSION = "v1";
 
     public Config parseArgs(String[] args) throws FileNotFoundException {
         CmdLineParser parser = new CmdLineParser(this);
@@ -89,6 +93,7 @@ public class CLI {
         return new Config().setRandNeighborsSampleSize(randNeighborsSampleSize).setDelta(DELTA).setNumPartitions(NUM_PARTITIONS)
                 .setUniformRandSampleSize(UNIFORM_RAND_SAMPLE_SIZE).setRounds(ROUNDS).setSeed(SEED).setTemperature(TEMPERATURE)
                 .setGraphFilePath(GRAPH).setNodeSelectionPolicy(nodeSelectionPolicy)
-                .setGraphInitialColorPolicy(graphInitColorSelectionPolicy).setOutputDir(OUTPUT_DIR).setAlpha(ALPHA);
+                .setGraphInitialColorPolicy(graphInitColorSelectionPolicy).setOutputDir(OUTPUT_DIR).setAlpha(ALPHA)
+                .setTemperatureAlpha(TEMP_ALPHA).setVersion(VERSION);
     }
 }
