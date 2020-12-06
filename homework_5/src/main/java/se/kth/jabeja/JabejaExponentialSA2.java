@@ -5,15 +5,15 @@ import se.kth.jabeja.rand.RandNoGenerator;
 
 import java.util.HashMap;
 
-public class JabejaExponentialSA extends Jabeja {
+public class JabejaExponentialSA2 extends Jabeja {
 
-    public JabejaExponentialSA(HashMap<Integer, Node> graph, Config config) {
+    public JabejaExponentialSA2(HashMap<Integer, Node> graph, Config config) {
         super(graph, config);
-        saBottomResetAfter = 30;
+        saBottomResetAfter = 150;
     }
 
     @Override protected void saCoolDown() {
-        double minT = 1e-5;
+        double minT = 1e-7;
 
         if (T > minT) {
             T = T * config.getTemperatureAlpha();
@@ -28,15 +28,7 @@ public class JabejaExponentialSA extends Jabeja {
     }
 
     @Override protected boolean shouldAcceptNewSolution(double newBenefit, double oldBenefit) {
-        if (newBenefit > oldBenefit) {
-            return true;
-        }
-
-        double acceptanceProbability = Math.exp(0.3 * (newBenefit - oldBenefit) / T);
-        if (newBenefit == oldBenefit) {
-            return false;
-        }
+        double acceptanceProbability = 1 / (1 + Math.exp(-(newBenefit - oldBenefit) / T));
         return acceptanceProbability > RandNoGenerator.nextDouble();
-
     }
 }

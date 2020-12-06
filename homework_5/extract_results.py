@@ -9,7 +9,7 @@ if (len(sys.argv)) != 2:
                         f"2. output folder location")
 output_folder = sys.argv[1]
 
-header = "graph,rounds,edge_cut,swaps,migrations,temp,alpha,jabeja_version"
+header = "graph,rounds,edge_cut,swaps,migrations,temp,alpha,version"
 results = []
 for filename in os.listdir(output_folder):
     t = filename[filename.find("_T_")+3:filename.find("_D_")]

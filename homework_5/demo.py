@@ -13,58 +13,70 @@ def ensure_dir(dirname):
 
 def run(config):
     print(config, "Started")
-    outputDir, (version, rounds), graph, alpha, temp = config
-    os.system(f'./run.sh -version {version} -rounds {rounds} -graph graphs/{graph} -temp {temp} -alpha {alpha} -outputDir "{outputDir}"') # >> /dev/null
+    outputDir, version, rounds, graph, alpha, temp = config
+    os.system(f'./run.sh -version {version} -rounds {rounds} -graph graphs/{graph} -temp {temp} -alpha {alpha} -outputDir "{outputDir}" >> /dev/null') # >> /dev/null
     print(config, "Done")
 
 if __name__ == '__main__':
-    compile = True
-    outputDir = "output6_SA_impl"
+    compile = False
+    outputDir = "output10"
     threads=6 # or processes, not sure
-    xdg_open = True
+    xdg_open = False
     generate_pngs = True
     graphs = [
         "3elt.graph",
-        # "4elt.graph",
-        # "add20.graph",
-        # "data.graph",
-        # "facebook.graph",
-        # # "google.graph",
+        "4elt.graph",
+        "add20.graph",
+        "data.graph",
+        # "twitter.graph",
+        ### "facebook.graph",
+        # "google.graph",
         # "scale-1000.graph",
         # "synth-0.25-1000.graph", "synth-0.75-1000.graph", "synth-0.95-10000.graph", "synth-0.95-1000.graph",
         # "synth-0.95-25000.graph", "synth-0.95-250.graph", "synth-0.95-5000.graph",
-        # "twitter.graph",
-        # "vibrobox.graph",
+        "vibrobox.graph",
         # "ws-10000.graph"
         # "ws-1000.graph", "ws-25000.graph", "ws-250.graph", "ws-5000.graph",
     ]
-    # a_values = [1.5,2,2.5,3]
-    # t_values = [1.5,1.75,2,2.25,2.5,3]
-    # version = ["v1"]
-    
+
+    configs = []
+
+    # V1 config
+    version = ["v1"]
+    rounds = [10000]
+    a_values = [2,2.5,3]
+    t_values = [1, 2, 3]
     # a_values = [2]
     # t_values = [2]
-    # version = ["v1"]
-    
-    # a_values = [1,2,2.5]
-    # t_values = [1,0.9,0.7]
-    # version = ["v2"]
-    
-    a_values = [2]
-    t_values = [2]
-    version_rounds = [("v2", 3000)]
+    configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
+
+
+    # V2 config
+    version = ["v2"]
+    rounds = [10000]
+    a_values = [2,3]
+    t_values = [2, 1, 0.9, 0.8]
+    # t_values = [0.8]
+    configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
+
+    # V3 config
+    version = ["v3"]
+    rounds = [10000]
+    a_values = [2,3]
+    t_values = [4,1,0.5, 0.25]
+    configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
+
 
     print(os.getcwd())
     ensure_dir(outputDir)
-    configs = list(itertools.product([outputDir], version_rounds, graphs, a_values, t_values))
     print(configs)
 
     if compile:
         os.system("./compile.sh")
 
-    with multiprocessing.Pool(threads) as pool:
-        list(tqdm.tqdm(pool.imap(run, configs), total=len(configs)))
-    os.system(f"python extract_results.py {outputDir} > {outputDir}/results.csv")
+    # with multiprocessing.Pool(threads) as pool:
+    #     list(tqdm.tqdm(pool.imap(run, configs), total=len(configs)))
+    # os.system(f"python extract_results.py {outputDir} > {outputDir}/results.csv")
 
     results = {}
     with open(f"{outputDir}/results.csv", "r") as f:
@@ -89,7 +101,7 @@ if __name__ == '__main__':
     with open(f"{outputDir}/results_grid.csv", "w") as f:
         for run_name in results:
             run_alphas = sorted(results[run_name].keys(), key=lambda x: float(x))
-            run_temps = [temp for a in run_alphas for temp in results[run_name][a].keys()]
+            run_temps = set([temp for a in run_alphas for temp in results[run_name][a].keys()])
             temps = sorted(run_temps, key=lambda x: float(x))
 
             f.write(run_name + "\n")

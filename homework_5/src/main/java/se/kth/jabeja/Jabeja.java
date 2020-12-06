@@ -22,6 +22,8 @@ public class Jabeja {
     double T;
     private boolean resultFileCreated = false;
     int saBottomCounter = 0;
+    int saBottomResetAfter;
+    Integer bestCut;
 
     //-------------------------------------------------------------------
     public Jabeja(HashMap<Integer, Node> graph, Config config) {
@@ -31,6 +33,7 @@ public class Jabeja {
         this.numberOfSwaps = 0;
         this.config = config;
         this.T = config.getTemperature();
+        saBottomResetAfter = 50;
     }
 
     //-------------------------------------------------------------------
@@ -58,8 +61,7 @@ public class Jabeja {
             }
         }
 
-        if (T == 1 && saBottomCounter++ > 40) {
-            System.out.println("restart");
+        if (T == 1 && saBottomCounter++ > saBottomResetAfter) {
             if ((config.getRounds() - round) > (50 + T / config.getDelta())) {
                 saBottomCounter = 0;
                 T = config.getTemperature();
@@ -250,6 +252,12 @@ public class Jabeja {
         }
 
         int edgeCut = grayLinks / 2;
+        if (bestCut == null || edgeCut < bestCut) {
+            bestCut = edgeCut;
+        }
+        if (round == config.getRounds() - 1) {
+            edgeCut = bestCut; // in order to save the best at last line
+        }
 
         logger.info(
                 "round: " + (round + 1) + ", edge cut:" + edgeCut + ", swaps: " + numberOfSwaps + ", migrations: " + migrations + ", temp"
@@ -268,8 +276,8 @@ public class Jabeja {
                 config.getOutputDir() + File.separator + inputFile.getName() + "_" + "NS" + "_" + config.getNodeSelectionPolicy() + "_"
                         + "GICP" + "_" + config.getGraphInitialColorPolicy() + "_" + "T" + "_" + config.getTemperature() + "_" + "D" + "_"
                         + config.getDelta() + "_" + "RNSS" + "_" + config.getRandomNeighborSampleSize() + "_" + "URSS" + "_" + config
-                        .getUniformRandomSampleSize() + "_" + "A" + "_" + config.getAlpha() + "_V_"
-                        + config.getVersion() + "_" + "R" + "_" + config.getRounds() + ".txt";
+                        .getUniformRandomSampleSize() + "_" + "A" + "_" + config.getAlpha() + "_V_" + config.getVersion() + "_" + "R" + "_"
+                        + config.getRounds() + ".txt";
 
         if (!resultFileCreated) {
             File outputDir = new File(config.getOutputDir());

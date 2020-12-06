@@ -64,6 +64,9 @@ public class Main {
             case "v2":
                 host = new JabejaExponentialSA(graph, config);
                 break;
+            case "v3":
+                host = new JabejaExponentialSA2(graph, config);
+                break;
             default:
                 throw new IllegalStateException("Unexpected version: " + config.getVersion());
         }
