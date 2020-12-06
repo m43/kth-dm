@@ -35,7 +35,7 @@ run_with_lock(){
     # this read waits until there is something to read
     read -u 3 -n 3 x && ((0==x)) || exit $x
     (
-     ( "$@"; )
+    ( "$@"; )
     # push the return code of the command to the semaphore
     printf '%.3d' $? >&3
     )&
@@ -46,10 +46,11 @@ task(){
     ./plot.sh output/"$1"_*.txt
 }
 
+./compile.sh
+
 open_sem $N
 for thing in "${graphs[@]}"; do
     run_with_lock task $thing
-done 
-
+done
 wait
 python extract_results.py output > output/results.csv

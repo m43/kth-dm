@@ -1,8 +1,15 @@
 # Instructions on how to run the solution
 
-The demo that can be run is in the file "demo.m". Instructions for running the file in MATLAB R2020b:
+Pick a graph from `graphs` folder (for example `3elt.graph`, `add20.graph` etc.), let its name be GRAPH_NAME, then you can enter the following commands to compile, run and plot:
 
-1. Check that the addon "Statistics and Machine Learning Toolbox" is installed.
-2. Open the demo.m file (Editor > Open > select "demo.m")
-3. In the opened editor window, right click the tab with the script name and select "Change Current Folder to ..."
-4. Run the script
+```sh
+./compile.sh
+./run.sh -graph graphs/GRAPH_NAME
+./plot.sh output/GRAPH_NAME_*.txt
+```
+
+You can also try running the python batch script, but we give no promises for non Linux operating systems. The batch script has configurable parameters (which graphs to run and in which configurations) inside itself. Enter the following to run the python batch script:
+
+```sh
+./demo.py
+```

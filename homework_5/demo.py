@@ -1,40 +1,47 @@
 #!/usr/bin/env python3
-import os
-import subprocess
-import tqdm
 import itertools
-from pathlib import Path
 import multiprocessing
+import os
+from pathlib import Path
+
+import tqdm
+
 
 def ensure_dir(dirname):
     dirname = Path(dirname)
     if not dirname.is_dir():
         dirname.mkdir(parents=True, exist_ok=False)
 
+
 def run(config):
     print(config, "Started")
     outputDir, version, rounds, graph, alpha, temp = config
-    os.system(f'./run.sh -version {version} -rounds {rounds} -graph graphs/{graph} -temp {temp} -alpha {alpha} -outputDir "{outputDir}" >> /dev/null') # >> /dev/null
+    os.system(
+        f'./run.sh -version {version} -rounds {rounds} -graph graphs/{graph} -temp {temp} -alpha {alpha} -outputDir "{outputDir}" >> /dev/null')  # >> /dev/null
     print(config, "Done")
 
+
 if __name__ == '__main__':
+    #####################################
+    ########### CONFIGURATION ###########
+    #####################################
     compile = False
-    outputDir = "output10"
-    threads=6 # or processes, not sure
+    outputDir = "output_9"
+    threads = 6  # or processes, not sure
     xdg_open = False
     generate_pngs = True
     graphs = [
         "3elt.graph",
-        "4elt.graph",
-        "add20.graph",
-        "data.graph",
+        # "4elt.graph",
+        # "add20.graph",
+        # "data.graph",
         # "twitter.graph",
-        ### "facebook.graph",
+        # "facebook.graph",
         # "google.graph",
         # "scale-1000.graph",
         # "synth-0.25-1000.graph", "synth-0.75-1000.graph", "synth-0.95-10000.graph", "synth-0.95-1000.graph",
         # "synth-0.95-25000.graph", "synth-0.95-250.graph", "synth-0.95-5000.graph",
-        "vibrobox.graph",
+        # "vibrobox.graph",
         # "ws-10000.graph"
         # "ws-1000.graph", "ws-25000.graph", "ws-250.graph", "ws-5000.graph",
     ]
@@ -44,28 +51,33 @@ if __name__ == '__main__':
     # V1 config
     version = ["v1"]
     rounds = [10000]
-    a_values = [2,2.5,3]
-    t_values = [1, 2, 3]
-    # a_values = [2]
-    # t_values = [2]
+    # a_values = [2,2.5,3]
+    # t_values = [1, 2, 3]
+    a_values = [2, 2.5]
+    t_values = [2]
     configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
-
 
     # V2 config
     version = ["v2"]
     rounds = [10000]
-    a_values = [2,3]
-    t_values = [2, 1, 0.9, 0.8]
-    # t_values = [0.8]
+    # a_values = [2,3]
+    # t_values = [2, 1, 0.9, 0.8]
+    a_values = [2, 3]
+    t_values = [1]
     configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
 
     # V3 config
     version = ["v3"]
     rounds = [10000]
-    a_values = [2,3]
-    t_values = [4,1,0.5, 0.25]
+    # a_values = [2,3]
+    # t_values = [4,1,0.5, 0.25]
+    a_values = [2]
+    t_values = [4, 1]
     configs.extend(list(itertools.product([outputDir], version, rounds, graphs, a_values, t_values)))
 
+    ######################################
+    ########### !CONFIGURATION ###########
+    ######################################
 
     print(os.getcwd())
     ensure_dir(outputDir)
@@ -74,14 +86,14 @@ if __name__ == '__main__':
     if compile:
         os.system("./compile.sh")
 
-    # with multiprocessing.Pool(threads) as pool:
-    #     list(tqdm.tqdm(pool.imap(run, configs), total=len(configs)))
-    # os.system(f"python extract_results.py {outputDir} > {outputDir}/results.csv")
+    with multiprocessing.Pool(threads) as pool:
+        list(tqdm.tqdm(pool.imap(run, configs), total=len(configs)))
+    os.system(f"python extract_results.py {outputDir} > {outputDir}/results.csv")
 
     results = {}
     with open(f"{outputDir}/results.csv", "r") as f:
         lines = [line.strip().split(",") for line in f.readlines()]
-        name_to_idx = {col:lines[0].index(col) for col in lines[0]}
+        name_to_idx = {col: lines[0].index(col) for col in lines[0]}
         for line in lines[1:]:
             graph = line[name_to_idx["graph"]]
             rounds = line[name_to_idx["rounds"]]
